@@ -3,7 +3,7 @@ import React from 'react';
 const team = [
   {
     name: 'Mohit Vaishnav',
-    image: '/src/assets/mohit_vaishnav.jpeg',
+    image: '/mohit_vaishnav.jpeg',
     title: 'Co-Founder & AI Visionary',
     education: 'PhD in AI & Natural Intelligence',
     institution: 'Toulouse Institute (ANITI) & Brown University',
@@ -11,7 +11,7 @@ const team = [
   },
   {
     name: 'Krishna Vaishnav',
-    image: '/src/assets/krishna_vaishnav.jpeg',
+    image: '/krishna_vaishnav.jpeg',
     title: 'Co-Founder & Security Expert',
     education: 'Master\'s in Cyber Security',
     institution: 'Tallinn University of Technology & University of Tartu',
@@ -26,9 +26,9 @@ const CoFounders = () => {
         {/* Header Section */}
         <div className="text-center mb-16">
           <div className="inline-block mb-4">
-            <span className="text-orange-600 text-sm font-medium tracking-wide uppercase px-4 py-2 bg-orange-50 rounded-full border border-orange-200">
+            {/* <span className="text-orange-600 text-sm font-medium tracking-wide uppercase px-4 py-2 bg-orange-50 rounded-full border border-orange-200">
               Leadership Team
-            </span>
+            </span> */}
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight">
             Meet Our Co-Founders
