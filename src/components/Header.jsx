@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
-const treatments = [
+const services = [
   "AI Policy analyzer",
   "AI ISMS audit",
   "AI audit notes",
@@ -29,18 +29,18 @@ const Header = () => {
       <div className="max-w-[1280px] mx-auto flex items-center justify-between">
         {/* Logo */}
         <a href="/" className="flex items-center gap-2">
-          <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center">
-            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-              <div className="w-4 h-4 bg-gray-800 rounded-full"></div>
-            </div>
-          </div>
-        </a>
+  <img 
+    src="/kimova.png" 
+    alt="Kimova Logo" 
+    className="w-36 h-18 object-contain" 
+  />
+</a>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-8 text-[#1f1f1f] font-medium">
           <a href="#" className="hover:text-orange-500 transition-colors duration-300">Home</a>
           
-          {/* Desktop Treatment Dropdown with Circular Animation */}
+          {/* Desktop services Dropdown with Circular Animation */}
           <div
             className="relative"
             onMouseEnter={handleDropdownMouseEnter}
@@ -63,7 +63,7 @@ const Header = () => {
               {dropdownOpen && (
                 <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20 w-80">
                   <div className="bg-transparent rounded-lg p-6 space-y-4">
-                    {treatments.map((item, index) => (
+                    {services.map((item, index) => (
                       <a
                         key={item}
                         href="#"
@@ -120,7 +120,7 @@ const Header = () => {
                     Home
                   </a>
                   
-                  {/* Mobile Treatment Dropdown */}
+                  {/* Mobile services Dropdown */}
                   <div className="relative">
                     <button
                       onClick={toggleMobileDropdown}
@@ -152,9 +152,9 @@ const Header = () => {
                       <ChevronDown className="w-5 h-5 rotate-180" />
                     </button>
                   </div>
-                  {/* Mobile Treatment Dropdown Items */}
+                  {/* Mobile services Dropdown Items */}
                   <div className="space-y-4 max-h-64 overflow-y-auto px-4">
-                    {treatments.map((item, index) => (
+                    {services.map((item, index) => (
                       <a
                         key={item}
                         href="#"
