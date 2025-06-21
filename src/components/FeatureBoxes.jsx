@@ -38,10 +38,25 @@ const FeatureBoxes = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [centerBoxIndex, setCenterBoxIndex] = useState(-1);
   const [isMobile, setIsMobile] = useState(false);
+  const [randomDirections, setRandomDirections] = useState([]);
   const boxRefs = useRef([]);
   const containerRef = useRef(null);
 
-  // Intersection Observer for scroll-triggered animation
+  // Generate random entrance directions
+  useEffect(() => {
+    const directions = features.map(() => {
+      const angle = Math.random() * 360;
+      const distance = 100 + Math.random() * 200; // 100-300px
+      return {
+        x: Math.cos(angle * Math.PI / 180) * distance,
+        y: Math.sin(angle * Math.PI / 180) * distance,
+        rotation: Math.random() * 360 - 180, // -180 to 180 degrees
+        scale: 0.3 + Math.random() * 0.4 // 0.3 to 0.7
+      };
+    });
+    setRandomDirections(directions);
+  }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -65,7 +80,6 @@ const FeatureBoxes = () => {
     };
   }, []);
 
-  // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -76,7 +90,6 @@ const FeatureBoxes = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Handle scroll detection for mobile
   useEffect(() => {
     if (!isMobile) return;
 
@@ -102,179 +115,210 @@ const FeatureBoxes = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
+    handleScroll();
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMobile]);
 
   return (
-    <section className="bg-gray-50 py-12 px-4" ref={containerRef}>
+    <section className="min-h-screen py-20 px-4 relative overflow-hidden" ref={containerRef}>
+      {/* Video Background */}
+      <video 
+        className="absolute inset-0 w-full h-full object-cover"
+        autoPlay 
+        loop 
+        muted 
+        playsInline
+      >
+        <source src="/public/busy-office.webm" type="video/webm" />
+      </video>
+      
+      {/* Dark overlay for better readability */}
+      <div className="absolute inset-0 bg-black/30"></div>
+      
+      <div className="relative z-10">
+        <h2 className={`text-center text-4xl font-bold text-white mb-32 tracking-wide drop-shadow-lg
+                        transition-all duration-1000 ease-out transform
+                        ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          Unlock Intelligent ISMS Compliance & Auditing
+        </h2>
 
-      <h2 className={`text-center text-3xl font-semibold text-orange-600 mb-24 tracking-wide
-                      transition-all duration-1000 ease-out transform
-                      ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-        Unlock Intelligent ISMS Compliance & Auditing
-      </h2>
+        <div className="max-w-7xl mx-auto">
+          {/* Desktop view */}
+          <div className="hidden md:block">
+            {/* First row - 3 boxes */}
+            <div className="flex flex-row gap-8 justify-center items-start mb-16">
+              {features.slice(0, 3).map((item, index) => {
+                const IconComponent = item.icon;
+                const direction = randomDirections[index] || { x: 0, y: 0, rotation: 0, scale: 1 };
+                
+                return (
+                  <div
+                    key={index}
+                    ref={el => boxRefs.current[index] = el}
+                    className={`group relative rounded-2xl shadow-lg border border-white/30
+                               p-8 w-80 transition-all duration-700 ease-out cursor-pointer
+                               transform flex flex-col items-center text-center
+                               hover:shadow-2xl hover:border-white/50 hover:scale-105
+                               bg-white/10 backdrop-blur-md`}
+                    style={{ 
+                      transform: isVisible 
+                        ? 'translate(0, 0) rotate(0deg) scale(1)' 
+                        : `translate(${direction.x}px, ${direction.y}px) rotate(${direction.rotation}deg) scale(${direction.scale})`,
+                      opacity: isVisible ? 1 : 0,
+                      transitionDelay: isVisible ? `${index * 150}ms` : '0ms',
+                      transformOrigin: 'center',
+                      minHeight: '280px'
+                    }}
+                  >
+                    {/* Icon Circle - Instant hover */}
+                    <div className="absolute -top-8">
+                      <div className="w-16 h-16 rounded-full border-4 border-[#00283b] bg-white/90 backdrop-blur-sm
+                                      flex items-center justify-center shadow-lg transition-all duration-150 ease-out
+                                      group-hover:w-20 group-hover:h-20 group-hover:shadow-xl group-hover:-top-10
+                                      group-hover:border-orange-500">
+                        <IconComponent className="w-6 h-6 text-gray-800 group-hover:w-8 group-hover:h-8 transition-all duration-150 ease-out" />
+                      </div>
+                    </div>
 
-      <div className="max-w-7xl mx-auto">
- 
-        <div className="hidden md:block">
-          {/* First row - 3 boxes */}
-          <div className="flex flex-row gap-12 justify-center items-start mb-32">
-            {features.slice(0, 3).map((item, index) => {
+                    {/* Content */}
+                    <div className="mt-12 mb-6 relative z-10">
+                      <h3 className="text-lg font-semibold text-white leading-tight drop-shadow-md">
+                        {item.name}
+                      </h3>
+                    </div>
+
+                    {/* Message with instant hover */}
+                    <div className="absolute inset-x-4 bottom-4 rounded-xl p-4 shadow-xl
+                                    bg-white/20 backdrop-blur-lg border border-white/40
+                                    opacity-0 group-hover:opacity-100 transform transition-all duration-200 ease-out
+                                    group-hover:translate-y-0 translate-y-4
+                                    before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-br 
+                                    before:from-white/10 before:to-transparent before:pointer-events-none">
+                      <p className="text-sm text-white leading-relaxed relative z-10 drop-shadow-sm">
+                        {item.message}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Second row - 3 boxes */}
+            <div className="flex flex-row gap-8 justify-center items-start">
+              {features.slice(3, 6).map((item, index) => {
+                const IconComponent = item.icon;
+                const direction = randomDirections[index + 3] || { x: 0, y: 0, rotation: 0, scale: 1 };
+                
+                return (
+                  <div
+                    key={index + 3}
+                    ref={el => boxRefs.current[index + 3] = el}
+                    className={`group relative rounded-2xl shadow-lg border border-white/30
+                               p-8 w-80 transition-all duration-700 ease-out cursor-pointer
+                               transform flex flex-col items-center text-center
+                               hover:shadow-2xl hover:border-white/50 hover:scale-105
+                               bg-white/10 backdrop-blur-md`}
+                    style={{ 
+                      transform: isVisible 
+                        ? 'translate(0, 0) rotate(0deg) scale(1)' 
+                        : `translate(${direction.x}px, ${direction.y}px) rotate(${direction.rotation}deg) scale(${direction.scale})`,
+                      opacity: isVisible ? 1 : 0,
+                      transitionDelay: isVisible ? `${(index + 3) * 150}ms` : '0ms',
+                      transformOrigin: 'center',
+                      minHeight: '280px'
+                    }}
+                  >
+                    {/* Icon Circle - Instant hover */}
+                    <div className="absolute -top-8">
+                      <div className="w-16 h-16 rounded-full border-4 border-[#00283b] bg-white/90 backdrop-blur-sm
+                                      flex items-center justify-center shadow-lg transition-all duration-150 ease-out
+                                      group-hover:w-20 group-hover:h-20 group-hover:shadow-xl group-hover:-top-10
+                                      group-hover:border-orange-500">
+                        <IconComponent className="w-6 h-6 text-gray-800 group-hover:w-8 group-hover:h-8 transition-all duration-150 ease-out" />
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="mt-12 mb-6 relative z-10">
+                      <h3 className="text-lg font-semibold text-white leading-tight drop-shadow-md">
+                        {item.name}
+                      </h3>
+                    </div>
+
+                    {/* Message with instant hover */}
+                    <div className="absolute inset-x-4 bottom-4 rounded-xl p-4 shadow-xl
+                                    bg-white/20 backdrop-blur-lg border border-white/40
+                                    opacity-0 group-hover:opacity-100 transform transition-all duration-200 ease-out
+                                    group-hover:translate-y-0 translate-y-4
+                                    before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-br 
+                                    before:from-white/10 before:to-transparent before:pointer-events-none">
+                      <p className="text-sm text-white leading-relaxed relative z-10 drop-shadow-sm">
+                        {item.message}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Mobile view */}
+          <div className="md:hidden flex flex-col items-center space-y-12">
+            {features.map((item, index) => {
               const IconComponent = item.icon;
+              const isCenter = centerBoxIndex === index;
+              const direction = randomDirections[index] || { x: 0, y: 0, rotation: 0, scale: 1 };
+              
               return (
                 <div
                   key={index}
                   ref={el => boxRefs.current[index] = el}
-                  className={`relative group bg-white rounded-2xl shadow-lg
+                  className={`relative rounded-2xl shadow-lg border border-white/30
                              p-6 w-80 transition-all duration-700 ease-out
-                             transform flex flex-col items-center text-center
-                             hover:shadow-2xl hover:-translate-y-2 hover:z-10
-                             ${isVisible 
-                               ? 'translate-x-0 opacity-100' 
-                               : index === 0 ? 'translate-x-[-100px] opacity-0' 
-                                 : index === 1 ? 'translate-y-[100px] opacity-0'
-                                 : 'translate-x-[100px] opacity-0'
-                             }`}
+                             flex flex-col items-center text-center transform
+                             bg-white/10 backdrop-blur-md
+                             ${isCenter ? 'scale-105 shadow-2xl border-white/50' : 'scale-100'}
+                             ${isCenter ? 'min-h-80' : 'min-h-52'}`}
                   style={{ 
-                    transitionDelay: isVisible ? `${index * 50}ms` : '0ms',
-                    minHeight: '200px'
+                    transform: isVisible 
+                      ? `translate(0, 0) rotate(0deg) scale(${isCenter ? 1.05 : 1})` 
+                      : `translate(${direction.x}px, ${direction.y}px) rotate(${direction.rotation}deg) scale(${direction.scale})`,
+                    opacity: isVisible ? 1 : 0,
+                    transitionDelay: isVisible ? `${index * 150}ms` : '0ms' 
                   }}
                 >
-                  {/* Icon */}
-                  <div className="absolute -top-12">
-                    <div className="w-24 h-24 rounded-full border-4 border-[#DD5100] bg-white 
-                                    flex items-center justify-center shadow-md
-                                    group-hover:w-28 group-hover:h-28 group-hover:shadow-lg
-                                    transition-all duration-500 ease-out">
-                      <IconComponent className="text-black text-3xl group-hover:text-4xl 
-                                               transition-all duration-500 ease-out" />
+                  {/* Icon Circle - Instant response */}
+                  <div className="absolute -top-6">
+                    <div className={`rounded-full border-4 border-[#00283b] bg-white/90 backdrop-blur-sm
+                                    flex items-center justify-center shadow-lg transition-all duration-150 ease-out
+                                    ${isCenter ? 'w-16 h-16 border-orange-500 shadow-xl' : 'w-14 h-14'}`}>
+                      <IconComponent className={`text-gray-800 transition-all duration-150 ease-out ${isCenter ? 'w-8 h-8' : 'w-6 h-6'}`} />
                     </div>
                   </div>
 
-                  {/* Name */}
-                  <div className="mt-16 mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-xl
-                                   transition-all duration-500 ease-out">{item.name}</h3>
+                  {/* Content */}
+                  <div className="mt-10">
+                    <h3 className={`font-semibold text-white mb-4 leading-tight transition-all duration-150 ease-out drop-shadow-md
+                                    ${isCenter ? 'text-lg' : 'text-base'}`}>
+                      {item.name}
+                    </h3>
                   </div>
 
-                  {/* Message text*/}
-                  <div className="overflow-hidden transition-all duration-700 ease-out
-                                  group-hover:opacity-100 opacity-0
-                                  group-hover:max-h-32 max-h-0
-                                  group-hover:translate-y-0 translate-y-4">
-                    <p className="text-sm text-gray-600 leading-relaxed px-2 pb-2">{item.message}</p>
+                  {/* Message with instant response */}
+                  <div className={`rounded-xl border border-white/40 shadow-xl mx-2
+                                  bg-white/20 backdrop-blur-lg transition-all duration-200 ease-out
+                                  before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-br 
+                                  before:from-white/10 before:to-transparent before:pointer-events-none
+                                  ${isCenter ? 'opacity-100 max-h-40 p-4' : 'opacity-0 max-h-0 p-0 overflow-hidden'}`}>
+                    <p className="text-sm text-white leading-relaxed relative z-10 drop-shadow-sm">
+                      {item.message}
+                    </p>
                   </div>
-
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-50 to-transparent 
-                                  opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out -z-10"></div>
                 </div>
               );
             })}
           </div>
-
-          {/* Second row - 3 boxes */}
-          <div className="flex flex-row gap-12 justify-center items-start">
-            {features.slice(3, 6).map((item, index) => {
-              const IconComponent = item.icon;
-              return (
-                <div
-                  key={index + 3}
-                  ref={el => boxRefs.current[index + 3] = el}
-                  className={`relative group bg-white rounded-2xl shadow-lg
-                             p-6 w-80 transition-all duration-700 ease-out
-                             transform flex flex-col items-center text-center
-                             hover:shadow-2xl hover:-translate-y-2 hover:z-10
-                             ${isVisible 
-                               ? 'translate-x-0 opacity-100' 
-                               : index === 0 ? 'translate-x-[-100px] opacity-0' 
-                                 : index === 1 ? 'translate-y-[-100px] opacity-0'
-                                 : 'translate-x-[100px] opacity-0'
-                             }`}
-                  style={{ 
-                    transitionDelay: isVisible ? `${(index + 3) * 50}ms` : '0ms',
-                    minHeight: '200px'
-                  }}
-                >
-                  {/* Icon */}
-                  <div className="absolute -top-12">
-                    <div className="w-24 h-24 rounded-full border-4 border-[#DD5100] bg-white 
-                                    flex items-center justify-center shadow-md
-                                    group-hover:w-28 group-hover:h-28 group-hover:shadow-lg
-                                    transition-all duration-500 ease-out">
-                      <IconComponent className="text-black text-3xl group-hover:text-4xl 
-                                               transition-all duration-500 ease-out" />
-                    </div>
-                  </div>
-
-                  {/* Name */}
-                  <div className="mt-16 mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-xl
-                                   transition-all duration-500 ease-out">{item.name}</h3>
-                  </div>
-
-                  {/* Message text with improved animation */}
-                  <div className="overflow-hidden transition-all duration-700 ease-out
-                                  group-hover:opacity-100 opacity-0
-                                  group-hover:max-h-32 max-h-0
-                                  group-hover:translate-y-0 translate-y-4">
-                    <p className="text-sm text-gray-600 leading-relaxed px-2 pb-2">{item.message}</p>
-                  </div>
-
-                  {/* Subtle background gradient on hover */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-50 to-transparent 
-                                  opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out -z-10"></div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Mobile view - Single column with scroll detection */}
-        <div className="md:hidden flex flex-col items-center space-y-16">
-          {features.map((item, index) => {
-            const IconComponent = item.icon;
-            const isCenter = centerBoxIndex === index;
-            
-            return (
-              <div
-                key={index}
-                ref={el => boxRefs.current[index] = el}
-                className={`relative bg-white rounded-2xl shadow-lg
-                           p-6 w-80 transition-all duration-500 ease-out
-                           flex flex-col items-center text-center transform
-                           ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}
-                           ${isCenter ? 'scale-105 shadow-2xl' : 'scale-100'}
-                           ${isCenter ? 'min-h-64' : 'min-h-48'}`}
-                style={{ 
-                  transitionDelay: isVisible ? `${index * 100}ms` : '0ms' 
-                }}
-              >
-                {/* Icon */}
-                <div className="absolute -top-12">
-                  <div className={`rounded-full border-4 border-[#DD5100] bg-white 
-                                  flex items-center justify-center shadow-md transition-all duration-500
-                                  ${isCenter ? 'w-28 h-28' : 'w-24 h-24'}`}>
-                    <IconComponent className={`text-black transition-all duration-500 ${isCenter ? 'text-4xl' : 'text-3xl'}`} />
-                  </div>
-                </div>
-
-                {/* Name */}
-                <div className="mt-16">
-                  <h3 className={`font-semibold text-gray-900 transition-all duration-500 ${isCenter ? 'text-xl' : 'text-lg'}`}>
-                    {item.name}
-                  </h3>
-                </div>
-
-                {/* Message text (shows when centered on mobile) */}
-                <div className={`overflow-hidden transition-all duration-500 ease-out mt-4
-                                ${isCenter ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
-                  <p className="text-sm text-gray-600 px-2">{item.message}</p>
-                </div>
-              </div>
-            );
-          })}
         </div>
       </div>
     </section>

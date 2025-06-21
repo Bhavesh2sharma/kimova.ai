@@ -1,143 +1,95 @@
 import React, { useState, useEffect } from 'react';
 import { Zap, Shield } from 'lucide-react';
 
-const LayeredHero = () => {
-  const [visibleIndex, setVisibleIndex] = useState(-1);
-  const [hoverPosition, setHoverPosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
+const WelcomeHero = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setVisibleIndex((prev) => (prev < 6 ? prev + 1 : prev));
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
     }, 100);
 
-    return () => clearInterval(interval);
+    return () => clearTimeout(timer);
   }, []);
 
-  const brand = ['K', 'i', 'm', 'o', 'v', 'a', '.AI'];
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setHoverPosition({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
+  const videoUrl = "/Corporate.webm";
 
   return (
-    <section 
-      className="relative w-full min-h-screen bg-[#DD5100] overflow-hidden flex items-center justify-start"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
-      {/* Content container */}
-      <div className="relative z-20 px-4 sm:px-8 md:px-16 lg:px-24 max-w-full min-h-screen w-full flex items-center justify-start">
-        {/* Main content */}
-        <div>
-          {/* Welcome text */}
-          <p className="text-white text-base sm:text-lg md:text-xl tracking-widest uppercase mb-2 sm:mb-4">
-            Welcome to
-          </p>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Video Background */}
+      <div className="absolute inset-0 w-full h-full z-0">
+        <video
+          className="w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+        >
+          <source src={videoUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className="absolute inset-0 bg-black/40 z-10"></div>
+      </div>
 
-          {/* Brand Name Animation */}
-          <h1 className="text-white font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl mb-4 sm:mb-6 tracking-tight flex flex-wrap gap-1">
-            {brand.map((char, index) => (
-              <span
-                key={index}
-                className={`inline-block transition-transform duration-300 ${
-                  visibleIndex >= index
-                    ? 'translate-y-0 opacity-100'
-                    : 'translate-y-8 opacity-0'
-                } ${
-                  char === '.AI' && visibleIndex >= index
-                    ? 'animate-bounce'
-                    : ''
-                }`}
-                style={{
-                  transitionDelay: `${index * 0.05}s`,
-                }}
-              >
-                {char}
-              </span>
-            ))}
-          </h1>
+      {/* Main Content */}
+      <div className="relative z-10 flex items-center min-h-screen pl-4 lg:pl-10">
+        <div className="max-w-4xl">
+          {/* First Line */}
+          <div className="font-playfair overflow-hidden">
+            <h1
+              className={`text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-white mb-4 leading-snug transform transition-all duration-1000 ease-out ${
+                isLoaded ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
+              }`}
+            >
+              We unite expertise and tech
+            </h1>
+          </div>
 
-          {/* Tagline */}
-          <p className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold tracking-widest mb-6 sm:mb-8 leading-tight ">
-            AI for Smarter ISMS Compliance & Audits
-          </p>
+          {/* Second Line */}
+          <div className="overflow-hidden">
+            <h2
+              className={`font-playfair text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light text-white mb-6 leading-snug transform transition-all duration-1500 ease-out delay-300 ${
+                isLoaded ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
+              }`}
+            >
+              Kimova.AI
+            </h2>
+          </div>
+
+          {/* Third Line */}
+          <div className="font-playfair overflow-hidden">
+            <p
+              className={`text-2xl md:text-3xl lg:text-4xl font-light text-white leading-snug transform transition-all duration-1500 ease-out delay-500 ${
+                isLoaded ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
+              }`}
+            >
+              AI for Smarter ISMS Compliance & Audits
+            </p>
+          </div>
 
           {/* Icons */}
-          <div className="flex space-x-4 sm:space-x-6">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white/20 rounded-full flex items-center justify-center">
-              <Shield className="text-white w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+          <div className="flex space-x-4 sm:space-x-6 mt-6">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-[#00283b]/20 rounded-full flex items-center justify-center">
+              <Shield className="text-[#00283b] w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
             </div>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white/20 rounded-full flex items-center justify-center">
-              <Zap className="text-white w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-[#00283b]/20 rounded-full flex items-center justify-center">
+              <Zap className="text-[#00283b] w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Hover reveal layer with white background and orange text */}
-      {isHovering && (
+      {/* Mobile Accent */}
+      <div className="lg:hidden absolute bottom-20 left-0 right-0">
         <div
-          className="absolute inset-0 bg-white z-30 pointer-events-none transition-all duration-300 ease-out"
-          style={{
-            clipPath: `circle(100px at ${hoverPosition.x}px ${hoverPosition.y}px)`,
-          }}
-        >
-          <div className="min-h-screen w-full flex items-center justify-start">
-            <div className="px-4 sm:px-8 md:px-16 lg:px-24">
-              {/* Welcome text */}
-              <p className="text-[#DD5100] text-base sm:text-lg md:text-xl tracking-widest uppercase mb-2 sm:mb-4">
-                Welcome to
-              </p>
-
-              {/* Brand Name Animation */}
-              <h1 className="text-[#DD5100] font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl mb-4 sm:mb-6 tracking-tight flex flex-wrap gap-1">
-                {brand.map((char, index) => (
-                  <span
-                    key={index}
-                    className={`inline-block transition-transform duration-300 ${
-                      visibleIndex >= index
-                        ? 'translate-y-0 opacity-100'
-                        : 'translate-y-8 opacity-0'
-                    } ${
-                      char === '.AI' && visibleIndex >= index
-                        ? 'animate-bounce'
-                        : ''
-                    }`}
-                    style={{
-                      transitionDelay: `${index * 0.05}s`,
-                    }}
-                  >
-                    {char}
-                  </span>
-                ))}
-              </h1>
-
-              {/* Tagline */}
-              <p className="text-[#DD5100] text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold tracking-widest mb-6 sm:mb-8 leading-tight">
-                AI for Smarter ISMS Compliance & Audits
-              </p>
-
-              {/* Icons */}
-              <div className="flex space-x-4 sm:space-x-6">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-[#DD5100]/20 rounded-full flex items-center justify-center">
-                  <Shield className="text-[#DD5100] w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
-                </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-[#DD5100]/20 rounded-full flex items-center justify-center">
-                  <Zap className="text-[#DD5100] w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </section>
+          className={`w-full h-12 bg-gradient-to-r from-blue-500 via-orange-500 to-green-500 transform transition-all duration-1000 ease-out delay-1200 ${
+            isLoaded ? 'translate-y-0 opacity-30' : 'translate-y-full opacity-0'
+          }`}
+          style={{ clipPath: 'polygon(0 0, 100% 0, 95% 100%, 0 100%)' }}
+        ></div>
+      </div>
+    </div>
   );
 };
 
-export default LayeredHero;
+export default WelcomeHero;

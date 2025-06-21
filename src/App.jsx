@@ -1,31 +1,46 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header'; 
 import Footer from './components/Footer';
 import FeatureBoxes from './components/FeatureBoxes';
 import Workflow from './components/Workflow';
-import FAQ  from './components/FAQ';
-import HeroSection  from './components/HeroSection';
-import WelcomeHero  from './components/WelcomeHero';
+import FAQ from './components/FAQ';
+import HeroSection from './components/HeroSection';
+import WelcomeHero from './components/WelcomeHero';
 import ComplianceComparison from './components/ComplianceComparison'; 
-import AIAgent from './components/AIAgent'; 
-import CoFounders from './components/CoFounders';
+import AIAgent from './components/AIAgent';
+import AboutUs from './Pages/AboutUs';
+import ContactUs from './pages/ContactUs';
 
-
-function App() {
+function HomePage() {
   return (
-    <div>
-      <Header />
+    <>
       <WelcomeHero />
       <HeroSection />
-      <CoFounders />
       <FeatureBoxes />
       <Workflow />
       <ComplianceComparison />
       <AIAgent />
       <FAQ />
-      <Footer />
-      
-    </div>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <div className="app-container">
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/contact" element={<ContactUs />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

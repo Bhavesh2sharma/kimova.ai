@@ -1,1 +1,51 @@
 @import "tailwindcss";
+
+
+@font-face {
+  font-family: 'YourFont';
+  src: url('/fonts/yourfont.woff2') format('woff2'),
+       url('/fonts/yourfont.woff') format('woff');
+  font-display: swap;
+}
+
+body {
+    font-family: 'ITC Charter', serif;
+  }
+  
+  /* Jumping dot */
+.dot-jump {
+    display: inline-block;
+    animation: jump 1.5s ease infinite;
+  }
+  
+  @keyframes jump {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  
+  /* Internal color effect */
+  .color-aura {
+    position: relative;
+    display: inline-block;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(90deg, #3B82F6, #F97316, #10B981);
+    background-size: 200% auto;
+    animation: shine 3s linear infinite;
+  }
+  
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
+  }
+  
+.page-transition {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }

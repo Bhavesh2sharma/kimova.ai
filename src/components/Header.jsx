@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const services = [
   "AI Policy analyzer",
@@ -25,20 +26,20 @@ const Header = () => {
   const toggleMobileDropdown = () => setMobileDropdownOpen(!mobileDropdownOpen);
 
   return (
-    <header className="bg-white shadow-md py-4 px-6 w-full fixed top-0 z-50">
-      <div className="max-w-[1280px] mx-auto flex items-center justify-between">
+    <header className="bg-white shadow-md py-2 px-6 w-full fixed top-0 z-50">
+      <div className="max-w-[1480px] mx-auto flex items-center justify-between">
         {/* Logo */}
-        <a href="/" className="flex items-center gap-2">
-  <img 
-    src="/kimova.png" 
-    alt="Kimova Logo" 
-    className="w-36 h-18 object-contain" 
-  />
-</a>
+        <Link to="/" className="flex items-center gap-2">
+          <img 
+            src="/kimova.png" 
+            alt="Kimova Logo" 
+            className="max-h-12 object-contain" 
+          />
+        </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-8 text-[#1f1f1f] font-medium">
-          <a href="#" className="hover:text-orange-500 transition-colors duration-300">Home</a>
+        <nav className="hidden lg:flex items-center gap-14 text-[#1f1f1f] font-medium mr-10">
+          <Link to="/" className="hover:text-orange-500 transition-colors duration-300">Home</Link>
           
           {/* Desktop services Dropdown with Circular Animation */}
           <div
@@ -56,7 +57,7 @@ const Header = () => {
               <div className={`
                 absolute left-1/2 top-2 -translate-x-1/2 transition-all duration-500 ease-out
                 ${dropdownOpen ? 'w-96 h-96 opacity-100 scale-100' : 'w-0 h-0 opacity-0 scale-0'}
-                bg-gradient-to-br from-orange-400 to-orange-600 rounded-full z-10 shadow-2xl
+                bg-[#00283b] rounded-full z-10 border-white shadow-2xl
               `}></div>
               
               {/* Dropdown Items */}
@@ -64,9 +65,9 @@ const Header = () => {
                 <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20 w-80">
                   <div className="bg-transparent rounded-lg p-6 space-y-4">
                     {services.map((item, index) => (
-                      <a
+                      <Link
                         key={item}
-                        href="#"
+                        to={`/services/${item.toLowerCase().replace(/\s+/g, '-')}`}
                         className={`
                           block text-white transition-all duration-200
                           text-center py-2 px-4 rounded-lg 
@@ -77,7 +78,7 @@ const Header = () => {
                         }}
                       >
                         {item}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -85,9 +86,9 @@ const Header = () => {
             </div>
           </div>
 
-          <a href="#" className="hover:text-orange-500 transition-colors duration-300">Our Blogs</a>
-          <a href="#" className="hover:text-orange-500 transition-colors duration-300">About Us</a>
-          <a href="#" className="hover:text-orange-500 transition-colors duration-300">Contact Us</a>
+          <Link to="/blogs" className="hover:text-orange-500 transition-colors duration-300">Our Blogs</Link>
+          <Link to="/about" className="hover:text-orange-500 transition-colors duration-300">About Us</Link>
+          <Link to="/contact" className="hover:text-orange-500 transition-colors duration-300">Contact Us</Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -108,17 +109,21 @@ const Header = () => {
 
           {/* Mobile Menu Circle */}
           <div className={`
-          fixed top-4 right-6 w-96 h-96 rounded-full overflow-hidden z-50
-          bg-gradient-to-br from-orange-400 to-orange-600 shadow-2xl
-          transition-all duration-500 ease-out origin-top-right
-          ${mobileMenuOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'}
-        `}>
+            fixed top-4 right-6 w-96 h-96 rounded-full overflow-hidden z-50
+            bg-[#00283b] shadow-2xl
+            transition-all duration-500 ease-out origin-top-right
+            ${mobileMenuOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'}
+          `}>
             <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
               {!mobileDropdownOpen ? (
                 <div className="space-y-6 text-center">
-                  <a href="#" className="block text-white font-medium text-lg hover:text-orange-100 transition-colors duration-300">
+                  <Link 
+                    to="/" 
+                    className="block text-white font-medium text-lg hover:text-orange-100 transition-colors duration-300"
+                    onClick={toggleMobileMenu}
+                  >
                     Home
-                  </a>
+                  </Link>
                   
                   {/* Mobile services Dropdown */}
                   <div className="relative">
@@ -131,15 +136,27 @@ const Header = () => {
                     </button>
                   </div>
 
-                  <a href="#" className="block text-white font-medium text-lg hover:text-orange-100 transition-colors duration-300">
+                  <Link 
+                    to="/blogs" 
+                    className="block text-white font-medium text-lg hover:text-orange-100 transition-colors duration-300"
+                    onClick={toggleMobileMenu}
+                  >
                     Our Blogs
-                  </a>
-                  <a href="#" className="block text-white font-medium text-lg hover:text-orange-100 transition-colors duration-300">
+                  </Link>
+                  <Link 
+                    to="/about" 
+                    className="block text-white font-medium text-lg hover:text-orange-100 transition-colors duration-300"
+                    onClick={toggleMobileMenu}
+                  >
                     About Us
-                  </a>
-                  <a href="#" className="block text-white font-medium text-lg hover:text-orange-100 transition-colors duration-300">
+                  </Link>
+                  <Link 
+                    to="/contact" 
+                    className="block text-white font-medium text-lg hover:text-orange-100 transition-colors duration-300"
+                    onClick={toggleMobileMenu}
+                  >
                     Contact Us
-                  </a>
+                  </Link>
                 </div>
               ) : (
                 <div className="space-y-6 text-center w-full">
@@ -155,9 +172,9 @@ const Header = () => {
                   {/* Mobile services Dropdown Items */}
                   <div className="space-y-4 max-h-64 overflow-y-auto px-4">
                     {services.map((item, index) => (
-                      <a
+                      <Link
                         key={item}
-                        href="#"
+                        to={`/services/${item.toLowerCase().replace(/\s+/g, '-')}`}
                         className={`
                           block text-orange-100 text-base hover:text-white transition-all duration-200
                           text-center py-3 px-4 rounded-lg hover:bg-white/10
@@ -166,9 +183,10 @@ const Header = () => {
                         style={{ 
                           animation: mobileDropdownOpen ? `slideInUp 0.3s ease-out ${index * 0.2}s forwards` : 'none'
                         }}
+                        onClick={toggleMobileMenu}
                       >
                         {item}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>

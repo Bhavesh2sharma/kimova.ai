@@ -43,26 +43,28 @@ const FAQ = () => {
     ];
 
     return (
-        <div className="py-8 mt-12 md:py-16 font-sans bg-gray-50">
+        <div className="py-8 mt-12 md:py-16 bg-white">
             <section className="container mx-auto px-4 md:flex md:flex-row gap-16 max-w-7xl">
                 <div className="flex-1 flex flex-col gap-10 mb-12 md:mb-0">
-                    <h2 className="text-2xl md:text-5xl font-bold text-center text-gray-800 leading-tight">
-                        Frequently Asked <span className="text-[#DD5100]">Questions</span>
+                    <h2 className="text-2xl md:text-5xl font-bold text-center text-black font-playfair lg:mt-20 leading-tight">
+                        Frequently Asked <span className="text-[#00283b]">Questions</span>
                     </h2>
-                    <div className="bg-gradient-to-br from-orange-100 to-orange-100 border border-orange-200 flex flex-col gap-8 justify-center items-center p-10 rounded-3xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-                        <div className="w-52 h-14 bg-gradient-to-r from-orange-500 to-orange-400 rounded-xl flex items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-300">
-                            <span className="text-white font-bold text-xl tracking-wide">Talk to Us</span>
-                        </div>
+                    <div className="bg-[#00283b] border border-[#00283b] flex flex-col gap-8 justify-center items-center p-10 rounded-3xl transition-shadow duration-300">
+                    <button className="w-52 h-14 bg-white text-[#00283b] rounded-xl flex items-center justify-center transition-all duration-300 group hover:bg-[#00283b] hover:text-white hover:scale-105 ">
+                    <span className="font-bold text-xl tracking-wide transition-colors duration-300 group-hover:text-white">
+                        Talk to Us
+                    </span>
+                    </button>
                         <div className="flex flex-col gap-3 text-center">
-                            <h3 className="text-xl md:text-2xl font-bold text-gray-800">Still have questions?</h3>
-                            <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-md">
+                            <h3 className="text-xl md:text-2xl font-bold text-white">Still have questions?</h3>
+                            <p className="text-base md:text-lg text-white leading-relaxed max-w-md">
                                 We're here for you. Talk to us and let us know how we can help.
                             </p>
                         </div>
                     </div>
                 </div>
                 <div className="flex-1">
-                    <div className="w-full bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <div className="w-full bg-white rounded-2xl shadow-lg border-2 border-[#00283b] shadow-[#00283b]/20 font-sans p-6 md:p-8">
                         {faqItems.map((item, index) => (
                             <div key={index} className="border-b border-orange-100 last:border-none">
                                 <h3 className="flex">
